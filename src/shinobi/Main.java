@@ -1,13 +1,16 @@
-package sample;
+package shinobi;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import shinobi.model.DataSource;
 
 public class Main extends Application {
 
+
+    // Run Front
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -18,6 +21,16 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-        launch(args);
+
+        // Start DB connection
+        DataSource dataSource = new DataSource();
+        if(!dataSource.open()) {
+            System.out.println("Can't open datasource");
+            return;
+        }
+
+                launch(args);
+
+        dataSource.close();
     }
 }

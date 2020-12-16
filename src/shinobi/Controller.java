@@ -1,4 +1,4 @@
-package sample;
+package shinobi;
 
 public class Controller {
 }
