@@ -5,21 +5,22 @@ import javafx.beans.property.SimpleStringProperty;
 public class Contact {
 
     private SimpleStringProperty firstName;
-    private String lastName;
-    private int number;
-    private String note;
+    private SimpleStringProperty lastName;
+    private SimpleStringProperty number;
+    private SimpleStringProperty note;
 
-    public Contact(String firstName, String lastName, int number) {
+    public Contact(){}
+    public Contact(String firstName, String lastName, long number) {
         this.firstName = new SimpleStringProperty(firstName);
-        this.lastName = lastName;
-        this.number = number;
+        this.lastName = new SimpleStringProperty(lastName);
+        this.number = new SimpleStringProperty(String.valueOf(number));
     }
 
-    public Contact(String firstName, String lastName, int number, String note) {
+    public Contact(String firstName, String lastName, long number, String note) {
         this.firstName = new SimpleStringProperty(firstName);
-        this.lastName = lastName;
-        this.number = number;
-        this.note = note;
+        this.lastName = new SimpleStringProperty(lastName);
+        this.number = new SimpleStringProperty(String.valueOf(number));
+        this.note = new SimpleStringProperty(note);
     }
 
     public String getFirstName() {
@@ -30,31 +31,43 @@ public class Contact {
         return firstName;
     }
 
-    public void setFirstName(SimpleStringProperty firstName) {
-        this.firstName = firstName;
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
     }
 
     public String getLastName() {
+        return lastName.get();
+    }
+
+    public SimpleStringProperty lastNameProperty() {
         return lastName;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastName.set(lastName);
     }
 
-    public int getNumber() {
+    public String getNumber() {
+        return number.get();
+    }
+
+    public SimpleStringProperty numberProperty() {
         return number;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setNumber(String number) {
+        this.number.set(number);
     }
 
     public String getNote() {
+        return note.get();
+    }
+
+    public SimpleStringProperty noteProperty() {
         return note;
     }
 
     public void setNote(String note) {
-        this.note = note;
+        this.note.set(note);
     }
 }

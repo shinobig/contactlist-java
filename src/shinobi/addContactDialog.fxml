@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+
+<DialogPane stylesheets="@stylesheet.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shinobi.AddContactDialogController">
+    <headerText>
+        We could put instructions here.
+    </headerText>
+    <content>
+        
+    </content>
+</DialogPane>
