@@ -3,12 +3,16 @@ package shinobi.model;
 import java.sql.*;
 
 public class DataSource {
-    private Connection conn;
+
+    private static Connection conn;
+
+    private static PreparedStatement addContact;
 
     public boolean open() {
         try {
             conn = DriverManager.getConnection(Variables.CONNECTION_STRING);
             Statement statement = conn.createStatement();
+            addContact = conn.prepareStatement(Variables.INSERT_CONTACT);
 
             // Setting test parameters
 /*
@@ -27,6 +31,8 @@ public class DataSource {
 
     public void close() {
         try {
+            closeQuery(addContact);
+
             if (conn != null) {
                 conn.close();
             }
@@ -35,6 +41,16 @@ public class DataSource {
         }
     }
 
+    private void closeQuery(PreparedStatement preparedStatement) {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException e) {
+            System.out.println("Couldn't close connection: " + e.getMessage());
+        }
+    }
+    /*
     public static void entryNewContact(Statement statement, String firstName, String lastName, long number, String note) {
         try {
             statement.execute("INSERT INTO " + Variables.TABLE_CONTACTS + " (" +
@@ -47,6 +63,34 @@ public class DataSource {
             System.out.println(throwables);
         }
     }
+
+     */
+
+
+    public void test(String hola){
+        System.out.println(hola);
+    }
+
+    public void entryNewContact(String firstName, String lastName, long number, String note) {
+
+       // System.out.println(Variables.INSERT_CONTACT);
+
+        try{
+            addContact.setString(1, firstName);
+          //  addContact.setString(2, lastName);
+          //  addContact.setLong(3, number);
+          //  addContact.setString(4, note);
+
+            System.out.println(addContact);
+
+            addContact.execute();
+
+        } catch (SQLException e ){
+            System.out.println("Couldn't add new contact: " + e.getMessage());
+            System.out.println(addContact.toString());
+        }
+    }
+
 
     public ResultSet queryAllContacts() {
         Statement statement = null;

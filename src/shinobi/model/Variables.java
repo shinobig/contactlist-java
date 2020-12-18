@@ -8,4 +8,5 @@ public class Variables {
     public static final String COLUMN_LAST_NAME = "lastName";
     public static final String COLUMN_NUMBER = "number";
     public static final String COLUMN_NOTES = "notes";
+    public static final String INSERT_CONTACT =  "INSERT INTO " + TABLE_CONTACTS + '(' + COLUMN_FIRST_NAME + ", " + COLUMN_LAST_NAME + ", " + COLUMN_NUMBER + ", " + COLUMN_NOTES + ") VALUES(?,?,?,?)";
 }
