@@ -4,15 +4,19 @@ import java.sql.*;
 
 public class DataSource {
 
-    private static Connection conn;
+    private Connection conn;
 
-    private static PreparedStatement addContact;
+    private PreparedStatement addContact;
+    private PreparedStatement removeContact;
+    private PreparedStatement editContact;
 
     public boolean open() {
         try {
             conn = DriverManager.getConnection(Variables.CONNECTION_STRING);
             Statement statement = conn.createStatement();
             addContact = conn.prepareStatement(Variables.INSERT_CONTACT);
+            removeContact = conn.prepareStatement(Variables.DELETE_CONTACT);
+            editContact = conn.prepareStatement(Variables.EDIT_CONTACT);
 
             // Setting test parameters
 /*
@@ -32,6 +36,8 @@ public class DataSource {
     public void close() {
         try {
             closeQuery(addContact);
+            closeQuery(removeContact);
+            closeQuery(editContact);
 
             if (conn != null) {
                 conn.close();
@@ -50,47 +56,20 @@ public class DataSource {
             System.out.println("Couldn't close connection: " + e.getMessage());
         }
     }
-    /*
-    public static void entryNewContact(Statement statement, String firstName, String lastName, long number, String note) {
-        try {
-            statement.execute("INSERT INTO " + Variables.TABLE_CONTACTS + " (" +
-                    Variables.COLUMN_FIRST_NAME + ", " +
-                    Variables.COLUMN_LAST_NAME + ", " +
-                    Variables.COLUMN_NUMBER + ", " +
-                    Variables.COLUMN_NOTES + ") " +
-                    "VALUES(\"" + firstName + "\", \"" + lastName + "\", \"" + String.valueOf(number) + "\", \"" + note + "\");");
-        } catch (SQLException throwables) {
-            System.out.println(throwables);
-        }
-    }
-
-     */
-
-
-    public void test(String hola){
-        System.out.println(hola);
-    }
 
     public void entryNewContact(String firstName, String lastName, long number, String note) {
 
-       // System.out.println(Variables.INSERT_CONTACT);
-
-        try{
+        try {
             addContact.setString(1, firstName);
-          //  addContact.setString(2, lastName);
-          //  addContact.setLong(3, number);
-          //  addContact.setString(4, note);
-
-            System.out.println(addContact);
-
-            addContact.execute();
-
-        } catch (SQLException e ){
+            addContact.setString(2, lastName);
+            addContact.setLong(3, number);
+            addContact.setString(4, note);
+            addContact.executeUpdate();
+            closeQuery(addContact);
+        } catch (SQLException e) {
             System.out.println("Couldn't add new contact: " + e.getMessage());
-            System.out.println(addContact.toString());
         }
     }
-
 
     public ResultSet queryAllContacts() {
         Statement statement = null;
@@ -103,4 +82,30 @@ public class DataSource {
         }
     }
 
+    public void removeContact(String firstNameOfContact){
+        try {
+            removeContact.setString(1, firstNameOfContact);
+            removeContact.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Couldn't delete contact: " + e.getMessage());
+        }
+    }
+
+    public void editContact(String contactToFind, Contact contactToEdit){
+
+        System.out.println(contactToEdit.getFirstName());
+
+        try{
+            editContact.setString(1, contactToEdit.getFirstName());
+            editContact.setString(2, contactToEdit.getLastName());
+            editContact.setLong(3, Long.parseLong(contactToEdit.getNumber()));
+            editContact.setString(4, contactToEdit.getNote());
+            editContact.setString(5, contactToFind);
+
+            editContact.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Couldn't save edit contact: " + e.getMessage());
+        }
+
+    }
 }

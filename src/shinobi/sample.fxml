@@ -28,9 +28,4 @@
 
     </TableView>
 </center>
-<bottom>
-  <Button text="test btn" />
-</bottom>
-
-
 </BorderPane>

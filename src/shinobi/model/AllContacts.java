@@ -32,23 +32,30 @@ public class AllContacts {
     }
 
     public void queryAllContacts(DataSource dataSource) {
+        List<Contact> newListOfContacts = new ArrayList<>();
 
         try {
             ResultSet results = dataSource.queryAllContacts();
-
             while (results.next()) {
-                allContacts.add(new Contact(results.getString(Variables.COLUMN_FIRST_NAME),
+                newListOfContacts.add(new Contact(results.getString(Variables.COLUMN_FIRST_NAME),
                         results.getString(Variables.COLUMN_LAST_NAME),
                         results.getLong(Variables.COLUMN_NUMBER),
                         results.getString(Variables.COLUMN_NOTES)));
             }
+            allContacts = newListOfContacts;
 
         } catch (SQLException e) {
             System.out.println("Couldn't fetch the contacts: " + e.getMessage());
         }
-
-
     }
 
+    public boolean isContactRegistered (String nameToFind, String lastNameToFind){
+        for (Contact contact : allContacts){
+            if (nameToFind.equals(contact.getFirstName()) && lastNameToFind.equals(contact.getLastName())){
+                return true;
+            }
+        }
+        return false;
+    }
 
 }

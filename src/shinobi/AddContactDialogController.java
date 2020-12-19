@@ -21,8 +21,15 @@ public class AddContactDialogController {
         String lastName = lastNameField.getText().trim();
         String number = numberField.getText().trim();
         String note = noteArea.getText().trim();
-
         return new Contact(firstName, lastName, Long.parseLong(number), note);
+    }
+
+    public void setEditFields(Contact contactToEdit){
+        firstNameField.setText(contactToEdit.getFirstName());
+        lastNameField.setText(contactToEdit.getLastName());
+        numberField.setText(contactToEdit.getNumber());
+        noteArea.setText(contactToEdit.getNote());
+
     }
 
 }
